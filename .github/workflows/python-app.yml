@@ -2,9 +2,9 @@ name: Subito.it Scraper
 
 on:
   schedule:
-    # Esecuzione ogni 5 minuti
+    # Esecuzione ogni 3 minuti
     - cron: "*/3 * * * *"
-  workflow_dispatch:  # Aggiungi questo per avvio manuale
+  workflow_dispatch: 
 
 jobs:
   run-python-app:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'  # Sostituisci con la versione di Python che ti serve
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
