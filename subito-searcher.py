@@ -355,7 +355,7 @@ if __name__ == '__main__':
 
 
     if args.daemon:
-        notify = False # Don't flood with notifications the first time
+        notify = True # Don't flood with notifications the first time
         while True:
             if in_between(datetime.now().time(), time(int(args.activeHour)), time(int(args.pauseHour))):
                 refresh(notify)
@@ -365,3 +365,5 @@ if __name__ == '__main__':
                 save_queries()
             t.sleep(int(args.delay))
 
+# --addtoken "8156605467:AAG72z8cEcWuLM65mlUi6G7ZRIjp1PA7WmM" --addchatid 128931058 
+# @ScrapingMeBot
