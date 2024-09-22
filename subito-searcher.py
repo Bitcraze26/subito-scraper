@@ -224,10 +224,13 @@ def run_query(url, name, notify, minPrice, maxPrice):
                     print("\n" + datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " New search added:", name)
                     print(datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " Adding result:", title, "-", price, "-", location)
                 else:   # add search results to dictionary
-                    if not queries.get(name).get(url).get(minPrice).get(maxPrice).get(link):   # found a new element
-                        tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " New element found for "+name+": "+title+" @ "+str(price)+" - "+location+" --> "+link+'\n'
-                        msg.append(tmp)
-                        queries[name][url][minPrice][maxPrice][link] ={'title': title, 'price': price, 'location': location}
+                    try:
+                        if not queries.get(name).get(url).get(minPrice).get(maxPrice).get(link):   # found a new element
+                            tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " New element found for "+name+": "+title+" @ "+str(price)+" - "+location+" --> "+link+'\n'
+                            msg.append(tmp)
+                            queries[name][url][minPrice][maxPrice][link] ={'title': title, 'price': price, 'location': location}
+                    except:
+                        print("Nuovo elemento trovato")
 
     if len(msg) > 0:
         if notify:
