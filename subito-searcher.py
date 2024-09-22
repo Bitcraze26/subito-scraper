@@ -219,7 +219,7 @@ def run_query(url, name, notify, minPrice, maxPrice):
             location = "Unknown location"
         if minPrice == "null" or price == "Unknown price" or price>=int(minPrice):
             if maxPrice == "null" or price == "Unknown price" or price<=int(maxPrice):
-                if title.find(queries.get(name)) != -1: # se il titolo contiene la nostra stringa di ricerca
+                if name.lower() in title.lower(): # se il titolo contiene la nostra stringa di ricerca
                     if not queries.get(name):   # insert the new search
                         queries[name] = {url:{minPrice: {maxPrice: {link: {'title': title, 'price': price, 'location': location}}}}}
                         print("\n" + datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " New search added:", name)
