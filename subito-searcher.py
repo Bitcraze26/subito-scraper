@@ -230,11 +230,14 @@ def run_query(url, name, notify, minPrice, maxPrice):
                             if not queries.get(name).get(url).get(minPrice).get(maxPrice).get(link):   # found a new element
                                 tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " Nuovo annuncio trovato per "+name+": "+title+" @ "+str(price)+" - "+location+" --> "+link+'\n'
                                 msg.append(tmp)
+                                send_telegram_messages(msg)
+                                print("\n".join(msg))
+                                print('\n{} new elements have been found.'.format(len(msg)))
                                 queries[name][url][minPrice][maxPrice][link] ={'title': title, 'price': price, 'location': location}
                         except:
                             pass
 
-    if len(msg) > 0:
+    ''' if len(msg) > 0:
         if notify:
             #if is_telegram_active():
             send_telegram_messages(msg)
@@ -248,7 +251,7 @@ def run_query(url, name, notify, minPrice, maxPrice):
         if products_deleted:
             save_queries()
 
-    # print("queries file saved: ", queries)
+    # print("queries file saved: ", queries)'''
 
 
 def save_queries():
