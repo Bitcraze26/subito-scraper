@@ -26,4 +26,4 @@ jobs:
 
       - name: Run Python script
         run: |
-          python subito-searcher.py --add "FENIX 7" --url "https://www.subito.it/annunci-italia/vendita/usato/?q=garmin%20fenix%207" --maxPrice '380' --minPrice '200' --addtoken "8156605467:AAG72z8cEcWuLM65mlUi6G7ZRIjp1PA7WmM" --addchatid 128931058
+          python subito-searcher.py --add "FENIX 7" --url "https://www.subito.it/annunci-italia/vendita/usato/?q=garmin%20fenix%207" --maxPrice '380' --minPrice '200' --addtoken "8156605467:AAG72z8cEcWuLM65mlUi6G7ZRIjp1PA7WmM" --addchatid "@ScrapingMeBot"
