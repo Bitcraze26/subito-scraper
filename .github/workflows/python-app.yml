@@ -3,7 +3,7 @@ name: Subito.it Scraper
 on:
   schedule:
     # Esecuzione ogni 3 minuti
-    - cron: "*/5 * * * *"
+    - cron: "*/6 * * * *"
   workflow_dispatch: 
 
 jobs:
