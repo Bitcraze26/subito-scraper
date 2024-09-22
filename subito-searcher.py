@@ -236,12 +236,8 @@ def run_query(url, name, notify, minPrice, maxPrice):
 
     if len(msg) > 0:
         if notify:
-            # Windows only: send notification
-            if not args.win_notifyoff and platform.system() == "Windows":
-                global toaster
-                toaster.show_toast("New announcements", "Query: " + name)
-            if is_telegram_active():
-                send_telegram_messages(msg)
+            #if is_telegram_active():
+            send_telegram_messages(msg)
             print("\n".join(msg))
             print('\n{} new elements have been found.'.format(len(msg)))
         save_queries()
