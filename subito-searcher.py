@@ -42,6 +42,7 @@ queries = dict()
 apiCredentials = dict()
 dbFile = "searches.tracked"
 telegramApiFile = "telegram_api_credentials"
+# TELEGRAM API TOKEN = 8156605467:AAG72z8cEcWuLM65mlUi6G7ZRIjp1PA7WmM
 
 # Windows notifications
 if platform.system() == "Windows":
@@ -201,11 +202,15 @@ def run_query(url, name, notify, minPrice, maxPrice):
 
         # check if the product has already been sold
         if sold != None:
+
+            try:
             # if the product has previously been saved remove it from the file
-            if queries.get(name).get(url).get(minPrice).get(maxPrice).get(link):
-                del queries[name][url][minPrice][maxPrice][link]
-                products_deleted = True
-            continue
+                if queries.get(name).get(url).get(minPrice).get(maxPrice).get(link):
+                    del queries[name][url][minPrice][maxPrice][link]
+                    products_deleted = True
+                continue
+            except:
+                print("Nessun risultato precedente!")
 
         try:
             location = product.find('span',re.compile(r'town')).string + product.find('span',re.compile(r'city')).string
@@ -321,7 +326,7 @@ if __name__ == '__main__':
         print_sitrep()
 
     if args.url is not None and args.name is not None:
-        run_query(args.url, args.name, False, args.minPrice if args.minPrice is not None else "null", args.maxPrice if args.maxPrice is not None else "null",)
+        run_query(args.url, args.name, False, args.minPrice if args.minPrice is not None else "null", args.maxPrice if args.maxPrice is not None else "null")
         print(datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " Query added.")
 
     if args.delete is not None:
