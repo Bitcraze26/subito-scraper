@@ -355,7 +355,7 @@ if __name__ == '__main__':
 
 
     if args.daemon:
-        notify = False # Don't flood with notifications the first time
+        notify = True # Don't flood with notifications the first time
         while True:
             if in_between(datetime.now().time(), time(int(args.activeHour)), time(int(args.pauseHour))):
                 refresh(notify)
