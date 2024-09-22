@@ -210,7 +210,7 @@ def run_query(url, name, notify, minPrice, maxPrice):
                     products_deleted = True
                 continue
             except:
-                print("Nessun risultato precedente!")
+                pass
 
         try:
             location = product.find('span',re.compile(r'town')).string + product.find('span',re.compile(r'city')).string
@@ -230,7 +230,7 @@ def run_query(url, name, notify, minPrice, maxPrice):
                             msg.append(tmp)
                             queries[name][url][minPrice][maxPrice][link] ={'title': title, 'price': price, 'location': location}
                     except:
-                        print("Nuovo elemento trovato")
+                        pass
 
     if len(msg) > 0:
         if notify:
