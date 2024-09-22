@@ -287,6 +287,7 @@ def send_telegram_messages(messages):
     for msg in messages:
         request_url = "https://api.telegram.org/bot" + apiCredentials["token"] + "/sendMessage?chat_id=" + apiCredentials["chatid"] + "&text=" + msg
         requests.get(request_url)
+        print(request_url)
 
 def in_between(now, start, end):
     '''A function to check if a time is in between two other times
