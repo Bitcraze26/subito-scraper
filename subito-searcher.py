@@ -42,6 +42,7 @@ queries = dict()
 apiCredentials = dict()
 dbFile = "searches.tracked"
 telegramApiFile = "telegram_api_credentials"
+notify = True
 # TELEGRAM API TOKEN = 8156605467:AAG72z8cEcWuLM65mlUi6G7ZRIjp1PA7WmM
 
 # Windows notifications
