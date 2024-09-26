@@ -142,6 +142,17 @@ def delete(toDelete):
     global queries
     queries.pop(toDelete)
 
+def logs(message, time=True,log_file="log.txt"):
+    if(time):
+        current_time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+        log_entry = f"[{current_time}]: {message}\n"
+    else:
+        log_entry = f"{message}\n"
+    
+    # Apre il file in modalità append (crea il file se non esiste)
+    with open(log_file, 'a') as file:
+        file.write(log_entry)
+
 def run_query(url, name, notify, minPrice, maxPrice):
     '''A function to run a query
 
@@ -162,7 +173,9 @@ def run_query(url, name, notify, minPrice, maxPrice):
     -------------
     >>> run_query("https://www.subito.it/annunci-italia/vendita/usato/?q=auto", "query", True, 100, "null")
     '''
-    print(datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " running query (\"{}\" - {})...".format(name, url))
+    query_log = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " running query (\"{}\" - {})...".format(name, url)
+    print(query_log)
+    logs(query_log,False)
 
     products_deleted = False
 
@@ -189,6 +202,10 @@ def run_query(url, name, notify, minPrice, maxPrice):
 
             link = product.find('a').get('href')
 
+            # Usa regex per trovare l'ID prima di ".htm"
+            match = re.search(r'-(\d+)\.htm', link)
+            id_annuncio = match.group(1)
+
             sold = product.find('span',re.compile(r'item-sold-badge'))
 
             # check if the product has already been sold
@@ -206,31 +223,33 @@ def run_query(url, name, notify, minPrice, maxPrice):
             try:
                 location = product.find('span',re.compile(r'town')).string + product.find('span',re.compile(r'city')).string
             except:
-                print(datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " Unknown location for item %s" % (title))
+                print(datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " Unknown location for item %s @ %d" % (title, price))
                 location = "Unknown location"
                         
             if minPrice == "null" or price == "Unknown price" or price>=int(minPrice):
                 if maxPrice == "null" or price == "Unknown price" or price<=int(maxPrice):
                     if not queries.get(name):   # insert the new search
-                        queries[name] = {url:{minPrice: {maxPrice: {link: {'title': title, 'price': price, 'location': location}}}}}
+                        queries[name] = {url:{minPrice: {maxPrice: {link: {'title': title, 'price': price, 'location': location, 'id': id_annuncio}}}}}
                         print("\n" + datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " New search added:", name)
                         print(datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + " Adding result:", title, "-", price, "-", location)
-                        tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + "\n\nNuovo annuncio trovato per "+name+":\n"+title+" @ "+str(price)+"€ - "+location+" --> "+link+'\n'
+                        tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + "\n\nNuovo annuncio trovato per "+name+":\n"+title+" @ "+str(price)+"€ - "+location+" - ("+id_annuncio+") --> "+link+'\n'
                         msg.append(tmp)
                         print("\n".join(msg))
                         print('\n{} nuovo articolo trovato. '.format(len(msg)))
                         send_telegram_messages(msg)
+                        logs(msg)
                         msg=[]
                     else:   # add search results to dictionary
                         try:
                             if not queries.get(name).get(url).get(minPrice).get(maxPrice).get(link):   # found a new element
-                                tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + "\n\nNuovo annuncio trovato per "+name+":\n"+title+" @ "+str(price)+"€ - "+location+" --> "+link+'\n'
+                                tmp = datetime.now().strftime("%Y-%m-%d, %H:%M:%S") + "\n\nNuovo annuncio trovato per "+name+":\n"+title+" @ "+str(price)+"€ - "+location+" - ("+id_annuncio+") --> "+link+'\n'
                                 msg.append(tmp)
                                 print("\n".join(msg))
                                 print('\n{} nuovo articolo trovato. '.format(len(msg)))
                                 send_telegram_messages(msg)
+                                logs(msg)
                                 msg = []
-                                queries[name][url][minPrice][maxPrice][link] ={'title': title, 'price': price, 'location': location}
+                                queries[name][url][minPrice][maxPrice][link] ={'title': title, 'price': price, 'location': location, 'id': id_annuncio}
                         except:
                             pass
 
